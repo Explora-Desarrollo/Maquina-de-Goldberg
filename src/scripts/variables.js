@@ -19,15 +19,17 @@ var Engine = Matter.Engine,
         if(width>425){
         width=550;
         height=width*relacion;
+        console.log("W "+width+" px")
+        console.log("H "+height+" px")
         }
-        
+    var scale = width/550
 
 
     //Modo desarrollador
         devMode=false,
     //Variables del juego
         intentos=true 
-        endGameTime=25000  //1s == 1000ms 
+        endGameTime=200  //1s == 1000ms 
     //Variable que controla el rebote
         rest = 0.2, 
     //Diametros de los objetos 

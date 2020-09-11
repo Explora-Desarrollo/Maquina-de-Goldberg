@@ -46,12 +46,13 @@ World.add(world, [
 
 var objetos ="1021,290/1011,290/1000,290/990,290/942,290/932,290/920,290/899,290/887,290/876,290/866,290/866,276/866,266/866,254/866,244/879,244/889,243/903,241/915,236/926,232/944,222/954,215/962,208/971,198/979,188/985,179/992,167/1000,151/1007,136/1011,125/1015,112/1018,99/1022,90/1024,90"
 var bigRampVec = Vertices.fromPath(`${objetos}`)
-
+bigRampVec = scaleVertices(bigRampVec, scale)
 
 
 var smallRampVec = Vertices.fromPath(
     "776,182/789,181/801,179/816,175/830,170/839,166/848,161/857,155/866,148/874,141/874,150/874,170/880,170/880,180"
 );
+smallRampVec = scaleVertices(smallRampVec, scale)
  
 var bigRamp = Bodies.fromVertices(
     width * 0.9,

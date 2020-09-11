@@ -23,6 +23,9 @@ function reset() {
     Repetir(true)
 }
 
+
+
+
 //añade un elemento nuevo a la maquina
 function añadir() {
     let boxAdd = Bodies.rectangle(width*0.9, height*0.9, width*0.17, width*0.12, {
@@ -41,6 +44,18 @@ function añadir() {
     World.add(world,boxAdd )
 }
 
+//
+function scaleVertices(vertObject,scale){
+
+  for (var i = 0; i < vertObject.length; i++ ) {
+    vertObject[i].x =  vertObject[i].x * scale ;
+    vertObject[i].y = vertObject[i].y * scale ;
+}
+
+return vertObject;
+
+
+}
 
 //Permite iniciar un cronometro para enviar un aviso al usuario de si rendirse o no
 function Observador() {
