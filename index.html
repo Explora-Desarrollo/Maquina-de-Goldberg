@@ -26,7 +26,7 @@
   
   <!-- Modal -->
   <div class="modal fade" id="objetos" tabindex="-1" aria-labelledby="objetos" aria-hidden="true" style="z-index: 999999; ">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="objetos">Añade algunos objetos</h5>
@@ -38,13 +38,19 @@
          <div class="row">
             <div class="col">
 
-                <img onclick="añadir()" height="50vh" width="50vh" src="./src/images/tv.png" alt="">
+                <img onclick="añadirTv(5)" height="50vh" width="50vh" src="./src/images/tv.png" alt="">
 
                 
             </div>
             <div class="col">
 
-                <img onclick="añadir()" height="50vh" width="50vh"  src="./src/images/tv.png" alt="">
+              <img onclick="añadirTv(30)" height="50vh" width="50vh" src="./src/images/tv.png" alt="">
+
+              
+          </div>
+            <div class="col">
+
+                <img onclick="añadirPelota()" height="50vh" width="50vh"  src="./src/images/tennis.png" alt="">
 
             </div>
             
@@ -78,4 +84,5 @@ canvas{
 <script type="text/javascript" src="./src/scripts/app_matter.js" type="text/javascript"></script>
 <script type="text/javascript" src="./src/scripts/objetos.js" type="text/javascript"></script>
 <script type="text/javascript" src="./src/scripts/eventos.js" type="text/javascript"></script>
+
 </html>

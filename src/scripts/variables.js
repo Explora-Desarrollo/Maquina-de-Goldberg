@@ -23,20 +23,29 @@ var Engine = Matter.Engine,
         console.log("H "+height+" px")
         }
     var scale = width/550
-
-
+    //variables pendulo
+    var radioPendulo=width*0.055;
+        xPenduloPosition=width*0.55;
+        masaPendulo=10
+        yPenduloPosition=height*0.17;
+        xPenduloCuerdaPosition=width*0.55;
+        yPenduloCuerdaPosition=0;
+    //Variables plataforma que pivota
+    var anchoPlataforma=width*0.4;
+    xPlataformaPosition=width*0.22;
+    yPlataformaPosition=height*0.85;
     //Modo desarrollador
         devMode=false,
     //Variables del juego
         intentos=true 
-        endGameTime=200  //1s == 1000ms 
+        endGameTime=25000  //1s == 1000ms 
     //Variable que controla el rebote
         rest = 0.2, 
     //Diametros de los objetos 
         ballBound=width*0.05;
         ballSpriteBound=width*0.00026;
-        ballXPos=width*0.2;
-        ballYPos=height*0.25
+        ballXPos=width*0.26;
+        ballYPos=height*0.26
         wallsWidth=10
         platformsWith=15
     //***Colores globales***

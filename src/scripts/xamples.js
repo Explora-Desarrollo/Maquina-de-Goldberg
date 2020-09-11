@@ -1,15 +1,15 @@
 var Example = Example || {};
 
-Example.svg = function() {
+Example.constraints = function() {
     var Engine = Matter.Engine,
         Render = Matter.Render,
         Runner = Matter.Runner,
+        Composites = Matter.Composites,
         Common = Matter.Common,
+        Constraint = Matter.Constraint,
         MouseConstraint = Matter.MouseConstraint,
         Mouse = Matter.Mouse,
         World = Matter.World,
-        Vertices = Matter.Vertices,
-        Svg = Matter.Svg,
         Bodies = Matter.Bodies;
 
     // create engine
@@ -22,7 +22,8 @@ Example.svg = function() {
         engine: engine,
         options: {
             width: 800,
-            height: 600
+            height: 600,
+            showAngleIndicator: true
         }
     });
 
@@ -32,56 +33,109 @@ Example.svg = function() {
     var runner = Runner.create();
     Runner.run(runner, engine);
 
-    // add bodies
-    var svgs = [
-        'iconmonstr-check-mark-8-icon', 
-        'iconmonstr-paperclip-2-icon',
-        'iconmonstr-puzzle-icon',
-        'iconmonstr-user-icon'
-    ];
+    // add stiff global constraint
+    var body = Bodies.polygon(150, 200, 5, 30);
 
-    if (typeof $ !== 'undefined') {
-        for (var i = 0; i < svgs.length; i += 1) {
-            (function(i) {
-                $.get('./svg/' + svgs[i] + '.svg').done(function(data) {
-                    var vertexSets = [],
-                        color = Common.choose(['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58']);
+    var constraint = Constraint.create({
+        pointA: { x: 150, y: 100 },
+        bodyB: body,
+        pointB: { x: -10, y: -10 }
+    });
 
-                    $(data).find('path').each(function(i, path) {
-                        var points = Svg.pathToVertices(path, 30);
-                        vertexSets.push(Vertices.scale(points, 0.4, 0.4));
-                    });
+    World.add(world, [body, constraint]);
 
-                    World.add(world, Bodies.fromVertices(100 + i * 150, 200 + i * 50, vertexSets, {
-                        render: {
-                            fillStyle: color,
-                            strokeStyle: color,
-                            lineWidth: 1
-                        }
-                    }, true));
-                });
-            })(i);
-        }
+    // add soft global constraint
+    var body = Bodies.polygon(280, 100, 3, 30);
 
-        $.get('./svg/svg.svg').done(function(data) {
-            var vertexSets = [],
-                color = Common.choose(['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58']);
+    var constraint = Constraint.create({
+        pointA: { x: 280, y: 120 },
+        bodyB: body,
+        pointB: { x: -10, y: -7 },
+        stiffness: 0.001
+    });
 
-            $(data).find('path').each(function(i, path) {
-                vertexSets.push(Svg.pathToVertices(path, 30));
-            });
+    World.add(world, [body, constraint]);
 
-            World.add(world, Bodies.fromVertices(400, 80, vertexSets, {
-                render: {
-                    fillStyle: color,
-                    strokeStyle: color,
-                    lineWidth: 1
-                }
-            }, true));
-        });
-    }
+    // add damped soft global constraint
+    var body = Bodies.polygon(400, 100, 4, 30);
+
+    var constraint = Constraint.create({
+        pointA: { x: 400, y: 120 },
+        bodyB: body,
+        pointB: { x: -10, y: -10 },
+        stiffness: 0.001,
+        damping: 0.05
+    });
+
+    World.add(world, [body, constraint]);
+
+    // add revolute constraint
+    var body = Bodies.rectangle(600, 200, 200, 20);
+    var ball = Bodies.circle(550, 150, 20);
+
+    var constraint = Constraint.create({
+        pointA: { x: 600, y: 200 },
+        bodyB: body,
+        length: 0
+    });
+
+    World.add(world, [body, ball, constraint]);
+
+    // add revolute multi-body constraint
+    var body = Bodies.rectangle(500, 400, 100, 20, { collisionFilter: { group: -1 } });
+    var ball = Bodies.circle(600, 400, 20, { collisionFilter: { group: -1 } });
+
+    var constraint = Constraint.create({
+        bodyA: body,
+        bodyB: ball
+    });
+
+    World.add(world, [body, ball, constraint]);
+
+    // add stiff multi-body constraint
+    var bodyA = Bodies.polygon(100, 400, 6, 20);
+    var bodyB = Bodies.polygon(200, 400, 1, 50);
+
+    var constraint = Constraint.create({
+        bodyA: bodyA,
+        pointA: { x: -10, y: -10 },
+        bodyB: bodyB,
+        pointB: { x: -10, y: -10 }
+    });
+
+    World.add(world, [bodyA, bodyB, constraint]);
+
+    // add soft global constraint
+    var bodyA = Bodies.polygon(300, 400, 4, 20);
+    var bodyB = Bodies.polygon(400, 400, 3, 30);
+
+    var constraint = Constraint.create({
+        bodyA: bodyA,
+        pointA: { x: -10, y: -10 },
+        bodyB: bodyB,
+        pointB: { x: -10, y: -7 },
+        stiffness: 0.001
+    });
+
+    World.add(world, [bodyA, bodyB, constraint]);
+
+    // add damped soft global constraint
+    var bodyA = Bodies.polygon(500, 400, 6, 30);
+    var bodyB = Bodies.polygon(600, 400, 7, 60);
+
+    var constraint = Constraint.create({
+        bodyA: bodyA,
+        pointA: { x: -10, y: -10 },
+        bodyB: bodyB,
+        pointB: { x: -10, y: -10 },
+        stiffness: 0.001,
+        damping: 0.1
+    });
+
+    World.add(world, [bodyA, bodyB, constraint]);
 
     World.add(world, [
+        // walls
         Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
         Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
         Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
@@ -93,7 +147,8 @@ Example.svg = function() {
         mouseConstraint = MouseConstraint.create(engine, {
             mouse: mouse,
             constraint: {
-                stiffness: 0.2,
+                // allow bodies on mouse to rotate
+                angularStiffness: 0,
                 render: {
                     visible: false
                 }

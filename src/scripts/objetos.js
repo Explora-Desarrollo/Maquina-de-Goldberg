@@ -35,12 +35,46 @@ World.add(world, [
         isStatic: true,
         render: { fillStyle: wallsColor },
     }),
-    Bodies.rectangle(width * 0.5,height-height*0.95, platformsWith, height * 0.1, {
+    Bodies.rectangle(width * 0.722,height-height*0.95, platformsWith*2, height * 0.1, {
         collisionFilter: { mask: collition | noCollition },
         isStatic: true,
         render: { fillStyle: wallsColor },
     }), //top vertical
+    Bodies.rectangle(width * 0.722,height-height*0.75, platformsWith*2, height * 0.1, {
+        collisionFilter: { mask: collition | noCollition },
+        isStatic: true,
+        render: { fillStyle: wallsColor },
+    }),
 ]);
+
+//canasta
+World.add(world, [
+    Bodies.rectangle(width*0.665, height-height*0.1,width*0.175 , platformsWith, {
+        collisionFilter: { mask: collition | noCollition },
+        isStatic: true,
+        angle: Math.PI * 0.5,
+        render: { fillStyle: wallsColor },
+    }),
+    Bodies.rectangle(width*0.83, height-height*0.1,width*0.175 , platformsWith, {
+        collisionFilter: { mask: collition | noCollition },
+        isStatic: true,
+        angle: Math.PI * 0.5,
+        render: { fillStyle: wallsColor },
+    }),
+    Bodies.rectangle(width*0.6, height-height*0.2,width*0.2 , platformsWith, {
+        collisionFilter: { mask: collition | noCollition },
+        isStatic: true,
+        angle: Math.PI * 0.25,
+        render: { fillStyle: wallsColor },
+    }),
+    Bodies.rectangle(width*0.9, height-height*0.2,width*0.2 , platformsWith, {
+        collisionFilter: { mask: collition | noCollition },
+        isStatic: true,
+        angle: Math.PI * 0.75,
+        render: { fillStyle: wallsColor },
+    }),
+]);
+
 
 //rampas
 
@@ -56,7 +90,7 @@ smallRampVec = scaleVertices(smallRampVec, scale)
  
 var bigRamp = Bodies.fromVertices(
     width * 0.9,
-    height * 0.4,
+    height * 0.41,
     bigRampVec,
     {
         isStatic: true,
@@ -108,7 +142,7 @@ var ball = Bodies.circle(ballXPos, ballYPos, ballBound, {
         category: noCollition | collition
     }, 
     friction: 0.002,
-    mass:5,
+    mass:10,
     restitution: rest,
     render: {
         sprite: {
@@ -131,26 +165,43 @@ var ball = Bodies.circle(ballXPos, ballYPos, ballBound, {
 
 
 //buttons
-var resetButton= Bodies.rectangle(width*0.07, height * 0.028, width*0.1 , height*0.035, {
+var resetButton= Bodies.rectangle(width*0.07, height * 0.031, width*0.1 , height*0.035, {
     collisionFilter: { mask: noCollition  },
     isStatic: true,
     render: { fillStyle: wallsColor },
 })
 
-var addNewObjButton= Bodies.rectangle(width*0.18, height * 0.028, width*0.1 , height*0.035, {
+var addNewObjButton= Bodies.rectangle(width*0.18, height * 0.031, width*0.1 , height*0.035, {
     collisionFilter: { mask: noCollition  },
     isStatic: true,
     render: { fillStyle: wallsColor },
 })
 
-var fullScreenButton= Bodies.rectangle(width-width*0.07, height * 0.028, width*0.1 , height*0.035, {
+var fullScreenButton= Bodies.rectangle(width-width*0.07, height * 0.031, width*0.1 , height*0.035, {
     collisionFilter: { mask:  noCollition },
     isStatic: true,
     render: { fillStyle: wallsColor },
 })
 
 World.add(world, [resetButton,addNewObjButton,fullScreenButton]);
+//pendulos
+//pendulos
+
+var pendulo = Bodies.circle(xPenduloPosition, yPenduloPosition, radioPendulo, { density: 0.04,mass:masaPendulo, frictionAir: 0.005});
+World.add(world, pendulo);
+World.add(world, Constraint.create({
+    pointA: { x: xPenduloCuerdaPosition, y: yPenduloCuerdaPosition },
+    bodyB: pendulo
+}));
 
 
-// var points = Svg.pathToVertices("./src/images/ramp.svg", 30);
-// vertexSets.push(Vertices.scale(points, 0.4, 0.4));
+// Plataforma que pivota
+var Plataforma = Bodies.rectangle(xPlataformaPosition, yPlataformaPosition, anchoPlataforma, platformsWith*1.5);
+var boxPlatform = Bodies.rectangle(0+width*0.11,height-height*0.07,width*0.19 ,height*0.12,{isStatic:true});
+var constraint = Constraint.create({
+    pointA: { x: xPlataformaPosition, y: yPlataformaPosition },
+    bodyB: Plataforma,
+    length: 0
+});
+
+World.add(world, [Plataforma, constraint,boxPlatform]);

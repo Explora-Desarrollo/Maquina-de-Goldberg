@@ -27,12 +27,14 @@ function reset() {
 
 
 //añade un elemento nuevo a la maquina
-function añadir() {
+function añadirTv(number) {
     let boxAdd = Bodies.rectangle(width*0.9, height*0.9, width*0.17, width*0.12, {
       collisionFilter: {
           category: noCollition | collition,
       },
       render: {
+        mass:number,
+        friction: 0.002,
           sprite: {
               texture: "./src/images/tv.png",
               fillStyle: "red",
@@ -43,6 +45,20 @@ function añadir() {
   });
     World.add(world,boxAdd )
 }
+
+function añadirPelota() {
+  let ball = Bodies.circle(width*0.9, height*0.9, ballBound, { 
+    collisionFilter: {
+        category: noCollition | collition
+    }, 
+    friction: 0.002,
+    mass:20,
+    restitution: rest,
+})
+
+  World.add(world,ball )
+}
+
 
 //
 function scaleVertices(vertObject,scale){
