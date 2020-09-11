@@ -1,17 +1,16 @@
 var Example = Example || {};
 
-Example.catapult = function() {
+Example.svg = function() {
     var Engine = Matter.Engine,
         Render = Matter.Render,
         Runner = Matter.Runner,
-        Composites = Matter.Composites,
-        Constraint = Matter.Constraint,
+        Common = Matter.Common,
         MouseConstraint = Matter.MouseConstraint,
         Mouse = Matter.Mouse,
         World = Matter.World,
-        Bodies = Matter.Bodies,
-        Body = Matter.Body,
-        Vector = Matter.Vector;
+        Vertices = Matter.Vertices,
+        Svg = Matter.Svg,
+        Bodies = Matter.Bodies;
 
     // create engine
     var engine = Engine.create(),
@@ -23,10 +22,7 @@ Example.catapult = function() {
         engine: engine,
         options: {
             width: 800,
-            height: 600,
-            showAngleIndicator: true,
-            showCollisions: true,
-            showVelocity: true
+            height: 600
         }
     });
 
@@ -37,27 +33,59 @@ Example.catapult = function() {
     Runner.run(runner, engine);
 
     // add bodies
-    var group = Body.nextGroup(true);
+    var svgs = [
+        'iconmonstr-check-mark-8-icon', 
+        'iconmonstr-paperclip-2-icon',
+        'iconmonstr-puzzle-icon',
+        'iconmonstr-user-icon'
+    ];
 
-    var stack = Composites.stack(250, 255, 1, 6, 0, 0, function(x, y) {
-        return Bodies.rectangle(x, y, 30, 30);
-    });
+    if (typeof $ !== 'undefined') {
+        for (var i = 0; i < svgs.length; i += 1) {
+            (function(i) {
+                $.get('./svg/' + svgs[i] + '.svg').done(function(data) {
+                    var vertexSets = [],
+                        color = Common.choose(['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58']);
 
-    var catapult = Bodies.rectangle(400, 520, 320, 20, { collisionFilter: { group: group } });
+                    $(data).find('path').each(function(i, path) {
+                        var points = Svg.pathToVertices(path, 30);
+                        vertexSets.push(Vertices.scale(points, 0.4, 0.4));
+                    });
+
+                    World.add(world, Bodies.fromVertices(100 + i * 150, 200 + i * 50, vertexSets, {
+                        render: {
+                            fillStyle: color,
+                            strokeStyle: color,
+                            lineWidth: 1
+                        }
+                    }, true));
+                });
+            })(i);
+        }
+
+        $.get('./svg/svg.svg').done(function(data) {
+            var vertexSets = [],
+                color = Common.choose(['#556270', '#4ECDC4', '#C7F464', '#FF6B6B', '#C44D58']);
+
+            $(data).find('path').each(function(i, path) {
+                vertexSets.push(Svg.pathToVertices(path, 30));
+            });
+
+            World.add(world, Bodies.fromVertices(400, 80, vertexSets, {
+                render: {
+                    fillStyle: color,
+                    strokeStyle: color,
+                    lineWidth: 1
+                }
+            }, true));
+        });
+    }
 
     World.add(world, [
-        stack,
-        catapult,
-        Bodies.rectangle(400, 600, 800, 50.5, { isStatic: true }),
-        Bodies.rectangle(250, 555, 20, 50, { isStatic: true }),
-        Bodies.rectangle(400, 535, 20, 80, { isStatic: true, collisionFilter: { group: group } }),
-        Bodies.circle(560, 100, 50, { density: 0.005 }),
-        Constraint.create({ 
-            bodyA: catapult, 
-            pointB: Vector.clone(catapult.position),
-            stiffness: 1,
-            length: 0
-        })
+        Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
+        Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
+        Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
+        Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
     ]);
 
     // add mouse control
