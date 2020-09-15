@@ -60,7 +60,7 @@ Events.on(mouseConstraint, "mousedown", function () {
     //Verificar si doy click en el recuadro de reset
     if(mouseConstraint.mouse.button == 0 && (world.constraints[world.constraints.length-1].pointA.x>=resetButton.bounds.min.x && world.constraints[world.constraints.length-1].pointA.x<=resetButton.bounds.max.x) && (world.constraints[world.constraints.length-1].pointA.y>=resetButton.bounds.min.y && world.constraints[world.constraints.length-1].pointA.y<=resetButton.bounds.max.y) ){
         // console.log(this.world.constraints[1].pointA) //Aqui tengo la posición exacta del puntero 
-        reset()
+        reset("reiniciar")
         console.log(this)
     }
       //Verificar si doy click en el recuadro de añadir
@@ -74,10 +74,12 @@ Events.on(mouseConstraint, "mousedown", function () {
 
             if(fullScreen){
                 openFullscreen();
+                fullScreenButton.render.sprite.texture="./src/images/Close_fullscreen.png"
                 fullScreen=false;
             }
             else{
                 closeFullscreen()
+                fullScreenButton.render.sprite.texture="./src/images/fullscreen.png"
                 fullScreen=true;
             }
     }

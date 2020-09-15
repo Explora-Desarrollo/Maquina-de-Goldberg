@@ -7,9 +7,9 @@ function Repetir(bool) {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Repetir intento!',
-            cancelButtonText: 'rendirte :(',
+            cancelButtonColor: 'green',
+            confirmButtonText: 'Reiniciar!',
+            cancelButtonText: 'Seguir jugando',
             target:elem //definir en que contenedor se va a visualizar
         }).then((result) => {
             if (result.isConfirmed) {
@@ -19,31 +19,55 @@ function Repetir(bool) {
     }
 }
 
-function reset() {
+function reset(opcion) {
+  if(opcion=="reiniciar"){
+    location.reload()
+  }
+  else{
     Repetir(true)
+  }
+    
+    
 }
 
 
 
 
 //añade un elemento nuevo a la maquina
-function añadirTv(number) {
-    let boxAdd = Bodies.rectangle(width*0.9, height*0.9, width*0.17, width*0.12, {
+function añadirRubik() {
+    let boxAdd = Bodies.rectangle(width*0.9, height*0.9, width*0.08, width*0.08, {
       collisionFilter: {
           category: noCollition | collition,
       },
       render: {
-        mass:number,
-        friction: 0.002,
+        mass:5,
+        friction: 0,
           sprite: {
-              texture: "./src/images/tv.png",
-              fillStyle: "red",
-              xScale: width*0.00006,
-              yScale: width*0.00006,
-          },
+              texture: './src/images/Rubik.png',
+              xScale:width*0.0015,
+              yScale:width*0.0015
+          }
       },
   });
     World.add(world,boxAdd )
+}
+//añade un elemento nuevo a la maquina
+function añadirFlorero() {
+  let boxAdd = Bodies.rectangle(100, 100, width*0.11, width*0.156, {
+    collisionFilter: {
+        category: noCollition | collition,
+    },
+    render: {
+      mass:90,
+      friction: 0,
+        sprite: {
+          texture: './src/images/Florero.png',
+          xScale:width*0.0017,
+          yScale:width*0.0014
+      }
+    },
+});
+  World.add(world,boxAdd )
 }
 
 function añadirPelota() {
@@ -51,13 +75,39 @@ function añadirPelota() {
     collisionFilter: {
         category: noCollition | collition
     }, 
-    friction: 0.002,
     mass:20,
     restitution: rest,
+    render:{
+      sprite: {
+        texture: './src/images/tennis.png',
+        xScale:width*0.0025,
+        yScale:width*0.0025
+    }
+    }
 })
 
   World.add(world,ball )
 }
+
+function añadirBolaBillar() {
+  let ball = Bodies.circle(width*0.9, height*0.9, ballBound*0.9, { 
+    collisionFilter: {
+        category: noCollition | collition
+    }, 
+    mass:20,
+    restitution: rest,
+    render:{
+      sprite: {
+        texture: './src/images/Bola_billar.png',
+        xScale:width*0.0025,
+        yScale:width*0.0025
+    }
+    }
+})
+
+  World.add(world,ball )
+}
+
 
 
 //

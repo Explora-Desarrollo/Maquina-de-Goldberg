@@ -19,14 +19,14 @@ var Engine = Matter.Engine,
         if(width>425){
         width=550;
         height=width*relacion;
+        }
         console.log("W "+width+" px")
         console.log("H "+height+" px")
-        }
     var scale = width/550
     //variables pendulo
     var radioPendulo=width*0.055;
         xPenduloPosition=width*0.55;
-        masaPendulo=10
+        masaPendulo=25
         yPenduloPosition=height*0.17;
         xPenduloCuerdaPosition=width*0.55;
         yPenduloCuerdaPosition=0;
@@ -43,14 +43,15 @@ var Engine = Matter.Engine,
         rest = 0.2, 
     //Diametros de los objetos 
         ballBound=width*0.05;
-        ballSpriteBound=width*0.00026;
-        ballXPos=width*0.26;
-        ballYPos=height*0.26
+        ballSpriteBound=width*0.0025;
+        ballXPos=width*0.24;
+        ballYPos=height*0.255
         wallsWidth=10
         platformsWith=15
     //***Colores globales***
         //paredes
-        wallsColor='gray'
+        canastaColor='rgb(255 255 255 / 0%)'
+        wallsColor='#c67267'
     // define our categories (as bit fields, there are up to 32 available)
     collition = 0x0001;
     noCollition = 0x0002;
