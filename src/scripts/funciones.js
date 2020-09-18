@@ -53,7 +53,7 @@ function añadirRubik() {
 }
 //añade un elemento nuevo a la maquina
 function añadirFlorero() {
-  let boxAdd = Bodies.rectangle(100, 100, width*0.11, width*0.156, {
+  let boxAdd = Bodies.rectangle(width*0.9, height*0.9, width*0.11, width*0.156, {
     collisionFilter: {
         category: noCollition | collition,
     },
